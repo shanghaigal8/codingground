@@ -1,0 +1,108 @@
+#include <stdio.h>
+
+typedef struct ListNode
+{
+  struct ListNode *next;
+  int data;
+} list_node_type;
+
+list_node_type node;
+
+void init(list_node_type *head)
+{
+  head->next = NULL;
+  head->data = 0;
+}
+
+list_node_type* traverse(list_node_type *head)
+{ 
+  list_node_type *cur;
+
+  cur = head;
+
+  if ( head == NULL )
+  {
+    printf("fail");
+    return NULL;
+  }
+  printf("traverse data%d\n",cur->data); 
+
+  if (head->next == NULL)
+    return head;
+
+  while( cur->next )
+  { 
+    cur = cur->next;//TODO
+    printf("traverse data%d\n",cur->data);
+  }
+  
+  return cur;
+}
+
+list_node_type* reverse(list_node_type *head)
+{
+  list_node_type *previous, *current, *next;
+  previous = head;
+  current = head->next;
+  next = current->next;
+  
+  current->next = previous; 
+  previous = current;
+  previous->next = NULL;
+  current = next;
+
+  while( current )
+  {
+    next = current->next;
+    current->next = previous;
+    previous = current; 
+    current = next;
+  }
+
+  head = previous;
+  return head;
+}
+
+void append(list_node_type *head, int val)
+{
+  list_node_type *newNode = (list_node_type *)malloc(sizeof(list_node_type));
+  list_node_type *cur = head;
+
+  if (newNode == NULL)
+  {
+    printf("Unable to allocate memory");
+    exit(-1);
+  }
+
+  newNode->data = val;
+  newNode->next = NULL;
+
+  while( cur->next )
+  { 
+    cur = cur->next;//TODO
+  }  
+
+  cur->next = newNode;
+}
+
+int main()
+{
+  int i = 1;
+  list_node_type node;
+  
+  list_node_type *head = &node;
+ 
+  init(head);
+
+  for(i; i<10; i++)
+  { 
+    append(head, i);
+  }
+ 
+  traverse(head);
+
+  head = reverse(head);
+  traverse(head);
+
+  return 0;
+}
